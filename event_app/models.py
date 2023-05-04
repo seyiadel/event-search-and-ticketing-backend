@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class Event(models.Model):
@@ -15,4 +15,7 @@ class Event(models.Model):
         return self.name
 
     class Meta:
-        ordering = 'created_at'
+        ordering = ['created_at',]
+
+class User(AbstractUser):
+    pass

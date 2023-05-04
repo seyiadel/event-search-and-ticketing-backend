@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path, re_path, include
 
 
-urlpatterns = []
+urlpatterns = [
+     re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
+]
 

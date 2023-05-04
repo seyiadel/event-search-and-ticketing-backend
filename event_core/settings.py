@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -42,7 +45,11 @@ INSTALLED_APPS = [
     "event_app",
 
     # Third-Party Apps
-    "rest_framework"
+    'rest_framework',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
+    'dotenv',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +64,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "event_core.urls"
 
+AUTH_USER_MODEL= 'event_app.User'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+
+    'social_django.context_processors.backends',
+    'social_django.context_processors.login_redirect',
+)
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -68,6 +83,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -75,6 +92,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "event_core.wsgi.application"
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'oauth2_provider.ext.rest_framework.OAuth2Authentication',  # django-oauth-toolkit < 1.0.0
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        'drf_social_oauth2.authentication.SocialAuthentication',
+    ),
+}
+
+AUTHENTICATION_BACKENDS = (
+
+    # Google  OAuth2
+    'social_core.backends.google.GoogleOAuth2',
+    # drf-social-oauth2
+   'drf_social_oauth2.backends.DjangoOAuth2',
+    # Django
+   'django.contrib.auth.backends.ModelBackend',
+)
+
+# Google configuration'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
+# Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
