@@ -1,7 +1,8 @@
 from django.urls import path, re_path, include
+from event_app.views import MyView
 
 
 urlpatterns = [
-     re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
+     path("", MyView.as_view(), name="my_view")
 ]
 
