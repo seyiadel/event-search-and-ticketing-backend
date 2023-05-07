@@ -1,15 +1,17 @@
 from django.db import models
-from event_app.models import Event, User
-# Create your models here.
-class Ticket(model.Model):
-    event = models.OneToOneField(Event,)
-    quantity = models.IntegerField(default=1)
-    created_at = models.DateTimeField(auto_now_add = True)
-    buyer = models.OneToOneField(User,)
+from event_app.models import EventInfo
 
-    @property
-    def total_price(self):
-        return self.event.price * self.quantity
+# Create your models here.
+class Ticket(models.Model):
+    status = models.CharField(default="Regular", max_length= 34)
+    created_at = models.DateTimeField(auto_now_add = True)
+    price = models.IntegerField()
+    available_tickets = models.IntegerField()
+    event = models.ForeignKey(EventInfo, on_delete=models.DO_NOTHING)
+    start_time = models.TimeField()
+    start_date = models.DateField()
+    end_time = models.TimeField()
+    end_date = models.DateField()
 
     def __str__(self):
-        return self.event.name
+        return f"{self.event.name} {self.status}"

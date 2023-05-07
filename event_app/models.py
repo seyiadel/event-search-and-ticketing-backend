@@ -19,20 +19,21 @@ class User(AbstractUser):
         ordering = ['date_joined',]
 
 
-class Event(models.Model):
+class Organizer(models.Model):
+    name = models.CharField(max_length=54)
+    bio = models.TextField(null=True)
+
+class EventInfo(models.Model):
     name = models.TextField()
     description = models.TextField()
     artwork = models.ImageField()
-    
     venue = models.TextField()
     location = models.CharField(default="Lagos", max_length=32)
     country = models.CharField(default="Nigeria", max_length=32)
     time = models.TimeField()
     date = models.DateField()
-    price = model.IntegerField()
-    number_of_tickets = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    organizers = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    creator = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     
     def __str__(self):
         return self.name

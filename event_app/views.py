@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, authentication, views
 from rest_framework.response import Response
 from event_app.serializers import EventSerializer
-from event_app.models import Event
+from event_app.models import EventInfo
 
 
 class MyView(generics.ListAPIView):
@@ -39,6 +39,6 @@ class EventsView(views.APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
-        event = Event.objects.all()
+        event = EventInfo.objects.all()
         serializer = EventSerializer(event, many=True)
         return Response(data=serializer.data, status=200)

@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     #Own App
     "event_app",
-
+    "ticket_app",
     # Third-Party Apps
     'rest_framework',
     'dotenv',

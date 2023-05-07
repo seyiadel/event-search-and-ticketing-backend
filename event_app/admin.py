@@ -1,6 +1,5 @@
 from django.contrib import admin
-from event_app.models import User, Event
-# Register your models here.
+from event_app.models import User, EventInfo
 
 admin.site.register(User)
-admin.site.register(Event)
+admin.site.register(EventInfo)
