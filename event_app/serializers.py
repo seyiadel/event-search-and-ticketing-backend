@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from event_app.models import User, EventInfo
+from ticket_app.serializers import TicketSerializer
+from ticket_app.models import Ticket
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -7,7 +9,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class EventSerializer(serializers.ModelSerializer):
-    tickets = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    tickets = TicketSerializer(many=True)
     class Meta:
         model = EventInfo
-        fields = ['name','description', 'artwork','venue', 'location','country','time','date','created_at','creator','tickets']
+        fields = ['id','name','description', 'artwork','venue', 'location','country','time','date','created_at','creator','tickets']
+
+    def create(self, validated_data):
+        ticket_data = validated_data.pop('tickets')
+        event = EventInfo.objects.create(**validated_data)
+        for ticket in ticket_data:
+            create_ticket = Ticket.objects.create(event=event.pk,**validated_data)
+        return event

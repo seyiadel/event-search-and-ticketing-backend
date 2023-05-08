@@ -26,7 +26,7 @@ class Organizer(models.Model):
 class EventInfo(models.Model):
     name = models.TextField()
     description = models.TextField()
-    artwork = models.ImageField()
+    artwork = models.ImageField(null=True)
     venue = models.TextField()
     location = models.CharField(default="Lagos", max_length=32)
     country = models.CharField(default="Nigeria", max_length=32)

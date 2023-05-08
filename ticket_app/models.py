@@ -7,7 +7,7 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     price = models.IntegerField()
     available_tickets = models.IntegerField()
-    event = models.ForeignKey(EventInfo, on_delete=models.DO_NOTHING)
+    event = models.ForeignKey(EventInfo, on_delete=models.DO_NOTHING, related_name="tickets")
     start_time = models.TimeField()
     start_date = models.DateField()
     end_time = models.TimeField()

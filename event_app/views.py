@@ -20,7 +20,7 @@ class MyView(generics.ListAPIView):
 
 class SingleEventView(views.APIView):
 
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
         serializer = EventSerializer(data=request.data)
@@ -30,7 +30,7 @@ class SingleEventView(views.APIView):
         return Response(data=serializer.errors, status=400)
 
     def get(self, request, pk):
-        event = Event.objects.filter(id=pk)
+        event = EventInfo.objects.get(id=pk)
         serializer = EventSerializer(event)
         return Response(data=serializer.data, status=200)
 
