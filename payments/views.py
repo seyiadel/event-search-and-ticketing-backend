@@ -7,9 +7,9 @@ from event_core import settings
 # Create your views here.
 
 
-def paystack_charge(YOUR_SECRET_KEY, email, amount, ticket_event_name):
+def paystack_charge(email, amount, ticket_event_name):
     url = "https://api.paystack.co/transaction/initialize"
-    headers= {"Authorization":f"Bearer {YOUR_SECRET_KEY}"}
+    headers= {"Authorization":f"Bearer {settings.PAYSTACK_SECRET_KEY}"}
     data = {"email": email,
     "amount": amount,
     }
@@ -31,7 +31,7 @@ class CheckOutView(views.APIView):
             email = serializer.validated_data['user']
             ticket_event_name = ticket.event.name
             amount = ticket.price * serializer.validated_data['quantity'] *100
-            payment_detail=paystack_charge(settings.PAYSTACK_SECRET_KEY, email, amount, ticket_event_name)
+            payment_detail=paystack_charge(email, amount, ticket_event_name)
             serializer.save()
             return response.Response(data={"data":serializer.data, "payment_detail": payment_detail}, status=200)
         return response.Response(data=serializer.errors, status=400)
