@@ -1,0 +1,17 @@
+from django.db import models
+from ticket_app.models import Ticket
+
+# Create your models here.
+class Checkout(models.Model):
+    user = models.EmailField()
+    ticket = models.ForeignKey(Ticket, on_delete=models.DO_NOTHING, related_name='checkouts')
+    quantity = models.IntegerField()
+    # reference = models.CharField(max_length=65)
+    created_at =models.DateTimeField(auto_now_add= True)
+
+    @property
+    def total_price(self):
+        return self.ticket.price * self.quantity
+
+    def __str__(self):
+        return self.ticket.event.name

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     #Own App
     "event_app",
     "ticket_app",
+    "payments",
     # Third-Party Apps
     'rest_framework',
     'dotenv',
@@ -92,6 +93,8 @@ SOCIALACCOUNT_PROVIDERS = {
 ROOT_URLCONF = "event_core.urls"
 
 AUTH_USER_MODEL= 'event_app.User'
+
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 
 TEMPLATES = [
     {
