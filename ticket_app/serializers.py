@@ -1,11 +1,12 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from ticket_app.models import Ticket
+from event_app.models import EventInfo
 
 
-class TicketSerializer(ModelSerializer):
+class TicketSerializer(serializers.ModelSerializer):
+    event = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Ticket
         fields = "__all__"
 
-    # def create(self, validated_data):
-    #     return Ticket.objects.create(**validated_data)
+    
