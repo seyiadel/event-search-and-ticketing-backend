@@ -15,7 +15,7 @@ def paystack_charge(email, amount):
     "amount": amount,
     }
     process = requests.post(url=url, headers=headers, data=data)
-    return process
+    return process.json()
 
 
 class CheckOutView(views.APIView):
@@ -31,6 +31,8 @@ class CheckOutView(views.APIView):
             amount = ticket.price * serializer.validated_data['quantity'] *100
             payment_detail=paystack_charge(email, amount)
             serializer.validated_data['status'] = "Pending"
+            serializer.validated_data['amount'] = amount/100
+            serializer.validated_data['paystack_reference'] = payment_detail['data']['reference']
             serializer.save()
             return response.Response(data={"checkout":serializer.data, "pay":payment_detail}, status=200)
         return response.Response(data=serializer.errors, status=400)

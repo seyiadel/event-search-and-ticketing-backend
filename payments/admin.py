@@ -5,7 +5,7 @@ from payments.models import Checkout
 
 class CheckoutAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
-    list_display = ['event_name','status', 'quantity', 'user', 'ticket_type']
+    list_display = ['event_name','status', 'quantity', 'user', 'ticket_type', 'amount', 'paystack_reference']
     list_filter = ['ticket__event','status', 'ticket__status',]
     search_fields = ['status','user']
 
