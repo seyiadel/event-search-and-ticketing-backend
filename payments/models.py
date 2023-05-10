@@ -15,4 +15,4 @@ class Checkout(models.Model):
         return self.ticket.price * self.quantity
 
     def __str__(self):
-        return f"{self.ticket.event.name} - {self.user}"
+        return f"{self.ticket.event.name}"

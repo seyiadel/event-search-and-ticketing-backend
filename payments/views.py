@@ -28,13 +28,11 @@ class CheckOutView(views.APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.validated_data['ticket'] = ticket
             email = serializer.validated_data['user']
-            ticket_pre_detail= f"{ticket.event.name} -{ticket.status}"
-            print(ticket_pre_detail)
             amount = ticket.price * serializer.validated_data['quantity'] *100
             payment_detail=paystack_charge(email, amount)
             serializer.validated_data['status'] = "Pending"
             serializer.save()
-            return response.Response(data={"tick":serializer.data, "pay":payment_detail}, status=200)
+            return response.Response(data={"checkout":serializer.data, "pay":payment_detail}, status=200)
         return response.Response(data=serializer.errors, status=400)
 
 
