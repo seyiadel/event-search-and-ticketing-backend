@@ -7,6 +7,7 @@ class Checkout(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.DO_NOTHING, related_name='checkouts')
     quantity = models.IntegerField()
     # reference = models.CharField(max_length=65)
+    status = models.CharField(max_length=8, blank=True)
     created_at =models.DateTimeField(auto_now_add= True)
 
     @property
@@ -14,4 +15,4 @@ class Checkout(models.Model):
         return self.ticket.price * self.quantity
 
     def __str__(self):
-        return self.ticket.event.name
+        return f"{self.ticket.event.name} - {self.user}"

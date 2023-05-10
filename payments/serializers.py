@@ -6,3 +6,5 @@ class CheckoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Checkout
         fields = "__all__"
+
+    
