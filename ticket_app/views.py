@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import views, response
+from rest_framework import views, response, permissions
 from ticket_app.serializers import TicketSerializer
 from event_app import models, serializers
 from ticket_app.models import Ticket

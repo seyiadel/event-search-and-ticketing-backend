@@ -22,7 +22,8 @@ class MyView(generics.ListAPIView):
 class SingleEventView(views.APIView):
 
     "Get Event for anonymous users"
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
+
     def get(self, request, event_id):
         event = EventInfo.objects.get(id=event_id)
         serializer = EventSerializer(event)
@@ -43,7 +44,7 @@ class EventsView(views.APIView):
 
 class OrganizedEventView(views.APIView):
 
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, organization_id):
         organizer =  Organization.objects.filter(id=organization_id).first()
@@ -55,6 +56,8 @@ class OrganizedEventView(views.APIView):
         return Response(data=serializer.errors, status=400)
 
 class UpdateDeleteOrganizedEventView(views.APIView):
+     
+    permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, organization_id, event_id):
         "Edit organized event per id"

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ticket_app.models import Ticket
 from event_app.models import EventInfo
+from tasks import charged_ticket_price
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -9,4 +10,6 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = "__all__"
 
-    
+    def create(self, validated_data):
+        validated_data['price'] = charged_ticket_price(validated_data['price'])
+        return Ticket.objects.create(**validated_data)

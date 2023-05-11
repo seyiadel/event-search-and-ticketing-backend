@@ -2,20 +2,11 @@ from django.shortcuts import render
 from rest_framework import views, response
 from ticket_app.models import Ticket
 from payments.serializers import CheckoutSerializer
-import requests
-from event_core import settings
 from payments.models import Checkout
+from tasks import paystack_charge
 # Create your views here.
 
 
-def paystack_charge(email, amount):
-    url = "https://api.paystack.co/transaction/initialize"
-    headers= {"Authorization":f"Bearer {settings.PAYSTACK_SECRET_KEY}"}
-    data = {"email": email,
-    "amount": amount,
-    }
-    process = requests.post(url=url, headers=headers, data=data)
-    return process.json()
 
 
 class CheckOutView(views.APIView):
@@ -42,11 +33,17 @@ class CheckOutView(views.APIView):
 class WebHookView(views.APIView):
     def post(self,request):
         if request.data['event'] == "charge.success":
-           checkout = Checkout.objects.filter(user=request.data['data']['customer']['email'])
-           checkout.update(status="Paid")
+            # Log here - Request charge was a success
+           checkout = Checkout.objects.get(user=request.data['data']['customer']['email'])
+           checkout.status = "Paid"
+           checkout.save()
+           tickets = Ticket.objects.get(id=checkout.ticket.id)
+           tickets.available_tickets -= checkout.quantity
+           tickets.save()
            return response.Response(status=200)
-        else:
-            checkout.update(status="Failed")
-            return response.Response(status=404)
+        elif request.data['event'] == "transfer.success":
+            print(request.data)
+        # checkout.update(status="Failed")
+        return response.Response(status=404)
 
 
