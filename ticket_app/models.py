@@ -12,6 +12,7 @@ class Ticket(models.Model):
     start_date = models.DateField()
     end_time = models.TimeField()
     end_date = models.DateField()
-
+    total_checkout_amount = models.IntegerField(null=True)
+    
     def __str__(self):
         return f"{self.event.name} {self.status}"

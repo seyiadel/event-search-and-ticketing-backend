@@ -13,12 +13,14 @@ def paystack_charge(email, amount):
     "amount": amount,
     }
     process = requests.post(url=url, headers=headers, data=data)
-    return process.json()
+    return response.json()
 
 
-def verify_bank_details(account_number, bank_name):
-    "Adding Organization Bank Details"
-    pass
+def verify_bank_details(account_number, bank_code):
+    url =f"https://api.paystack.co/bank/resolve?account_number={account_number}&bank_code={bank_code}"
+    response = requests.post(url=url, headers=headers)
+    return response.json()
+
 
 def create_tranfer_recipient(full_name, account_number, bank_code):
     "This is to confirm and create a receiver"
