@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from event_app.managers import UserManager
+from organizations.models import Organization
 # Create your models here.
 
 class User(AbstractUser):
@@ -19,10 +20,6 @@ class User(AbstractUser):
         ordering = ['date_joined',]
 
 
-class Organizer(models.Model):
-    name = models.CharField(max_length=54)
-    bio = models.TextField(null=True)
-
 class EventInfo(models.Model):
     name = models.TextField()
     description = models.TextField()
@@ -33,8 +30,7 @@ class EventInfo(models.Model):
     time = models.TimeField()
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    
+    organizer = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='events')
     def __str__(self):
         return self.name
 

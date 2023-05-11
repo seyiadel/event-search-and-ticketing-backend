@@ -9,7 +9,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class EventSerializer(serializers.ModelSerializer):
+    organizer = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = EventInfo
-        fields = ['id','name','description', 'artwork','venue', 'location','country','time','date','created_at','creator']
+        fields = ['id','name','description', 'artwork','venue', 'location','country','time','date','created_at','organizer']
 
