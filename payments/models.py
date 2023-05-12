@@ -1,6 +1,6 @@
 from django.db import models
 from ticket_app.models import Ticket
-
+from organizations.models import Organization
 # Create your models here.
 class Checkout(models.Model):
     user = models.EmailField()
@@ -17,3 +17,15 @@ class Checkout(models.Model):
 
     def __str__(self):
         return f"{self.ticket.event.name}"
+
+class BankDetail(models.Model):
+    account_number = models.IntegerField()
+    bank_name = models.CharField(max_length= 20, blank=True)
+    bank_code = models.IntegerField()
+    account_name = models.CharField(max_length= 50, blank=True)
+    recipient_code = models.CharField(max_length= 45, blank=True)
+    owner = models.OneToOneField(Organization, on_delete=models.CASCADE, blank=True)
+
+    def __str__(self):
+        return f"{self.bank_name} {self.account_number} - {self.owner.name}"
+

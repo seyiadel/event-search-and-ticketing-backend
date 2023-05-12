@@ -1,7 +1,7 @@
 from django.contrib import admin
-from payments.models import Checkout
+from payments.models import Checkout, BankDetail
 # Register your models here.
-
+admin.site.register(BankDetail)
 
 class CheckoutAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"

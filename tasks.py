@@ -18,7 +18,7 @@ def paystack_charge(email, amount):
 
 def verify_bank_details(account_number, bank_code):
     url =f"https://api.paystack.co/bank/resolve?account_number={account_number}&bank_code={bank_code}"
-    response = requests.post(url=url, headers=headers)
+    response = requests.get(url=url, headers=headers)
     return response.json()
 
 
@@ -48,3 +48,8 @@ def tranfer_earnings(amount, recipient_code, unique_reference, reason):
     response =requests.post(url=url, headers=headers, data=data)
     return response.json()
 
+
+def list_banks():
+    url ="https://api.paystack.co/bank"
+    response = requests.get(url=url, headers=headers)
+    return response.json()

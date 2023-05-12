@@ -10,3 +10,4 @@ class OrganizationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['creator'] = self.context('request').user
         return Organization.objects.create(**validated_data)
+

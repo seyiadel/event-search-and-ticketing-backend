@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework import views, response
 from ticket_app.models import Ticket
-from payments.serializers import CheckoutSerializer
+from payments.serializers import CheckoutSerializer, BankDetailSerializer
 from payments.models import Checkout
-from tasks import paystack_charge
+from tasks import paystack_charge , list_banks
+from organizations.models import Organization
 # Create your views here.
 
 
@@ -47,3 +48,22 @@ class WebHookView(views.APIView):
         return response.Response(status=404)
 
 
+class OrganzationBankDetails(views.APIView):
+
+    def post(self, request, organization_id):
+        organization = Organization.objects.get(id=organization_id)
+        serializer = BankDetailSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):     
+          serializer.validated_data['owner'] = organization
+          serializer.save()
+          return response.Response(data=serializer.data, status=201)
+        return response.Response(data=serializer.errors, status=400)
+        
+
+
+class ListBanks(views.APIView):
+
+    def get(self, request):
+        banks = list_banks()
+        return response.Response(data=banks)
+    
