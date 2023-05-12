@@ -40,6 +40,7 @@ class WebHookView(views.APIView):
            checkout.save()
            tickets = Ticket.objects.get(id=checkout.ticket.id)
            tickets.available_tickets -= checkout.quantity
+           tickets.total_checkout_amount += checkout.amount
            tickets.save()
            return response.Response(status=200)
         elif request.data['event'] == "transfer.success":
