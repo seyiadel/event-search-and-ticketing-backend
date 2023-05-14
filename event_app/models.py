@@ -31,6 +31,7 @@ class EventInfo(models.Model):
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     organizer = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='events')
+    earnings = models.IntegerField()
     def __str__(self):
         return self.name
 

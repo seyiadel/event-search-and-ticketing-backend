@@ -1,6 +1,9 @@
 from django.db import models
 from ticket_app.models import Ticket
 from organizations.models import Organization
+from event_app.models import EventInfo
+import uuid
+
 # Create your models here.
 class Checkout(models.Model):
     user = models.EmailField()
@@ -29,5 +32,12 @@ class BankDetail(models.Model):
     def __str__(self):
         return f"{self.bank_name} {self.account_number} - {self.owner.name}"
 
-class WithdrawTicketEarnings(models.Model):
-    pass
+class WithdrawEventEarning(models.Model):
+    event = models.OneToOneField(EventInfo, on_delete=models.CASCADE)
+    bank_detail = models.ForeignKey(BankDetail, on_delete=models.DO_NOTHING)
+    reference_code = models.UUIDField(uuid.uuid4, max_length = 45, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(default="Pending", max_length=24)
+    
+    def __str__(self):
+        return f"{self.event.name}, {self.reference_code}"

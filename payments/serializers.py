@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from payments.models import Checkout, BankDetail
+from payments.models import Checkout, BankDetail, WithdrawEventEarning
 from tasks import verify_bank_details, create_tranfer_recipient
 
 class CheckoutSerializer(serializers.ModelSerializer):
@@ -35,3 +35,11 @@ class BankDetailSerializer(serializers.ModelSerializer):
         validated_data["bank_name"] = bank_name
         
         return BankDetail.objects.create(**validated_data)
+
+
+class WithdrawEventEarningSerializer(serializers.ModelSerializer):
+    event = serializers.PrimaryKeyRelatedField(read_only=True)
+    bank_detail = serializers.PrimaryKeyRelatedField(read_only=True)
+    class Meta:
+        model = WithdrawEventEarning
+        fields = "__all__"

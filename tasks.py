@@ -5,6 +5,10 @@ def charged_ticket_price(price):
     price += price * 0.09
     return price
 
+def remove_charge_from_earnings(earning):
+    earning -= earning * 0.09
+    return earning
+
 headers= {"Authorization":f"Bearer {settings.PAYSTACK_SECRET_KEY}"}
 
 def paystack_charge(email, amount):
@@ -45,7 +49,7 @@ def tranfer_earnings(amount, recipient_code, unique_reference, reason):
       "recipient": recipient_code, 
       "reason": reason 
     }
-    response =requests.post(url=url, headers=headers, data=data)
+    response =requests.post(url=url, headers=headers, data=data, verify=False)
     return response.json()
 
 
