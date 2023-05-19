@@ -18,10 +18,9 @@ class BankDetailSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         requested_account_number = validated_data['account_number']
         bank_code = validated_data['bank_code']
-        # requested_account_name = validated_data['account_name']
-
+       
         account_verify = verify_bank_details(requested_account_number, bank_code)
-        print(account_verify)
+        
         verified_account_name = account_verify["data"]["account_name"]
         verified_account_number = account_verify["data"]["account_number"]
 

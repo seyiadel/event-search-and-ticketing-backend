@@ -1,8 +1,6 @@
 from django.contrib import admin
-from payments.models import Checkout, BankDetail, WithdrawEventEarning, ListOfBank
+from payments.models import Checkout, BankDetail, WithdrawEventEarning
 # Register your models here.
-
-admin.site.register(ListOfBank)
 
 class WithdrawEventEarningAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"

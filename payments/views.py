@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import views, response
 from ticket_app.models import Ticket
 from payments.serializers import CheckoutSerializer, BankDetailSerializer, WithdrawEventEarningSerializer
-from payments.models import Checkout, EventInfo, BankDetail, ListOfBank, WithdrawEventEarning
+from payments.models import Checkout, EventInfo, BankDetail, WithdrawEventEarning
 from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings
 from organizations.models import Organization
 import uuid
