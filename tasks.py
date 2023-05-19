@@ -54,6 +54,10 @@ def tranfer_earnings(amount, recipient_code, unique_reference, reason):
 
 
 def list_banks():
-    url ="https://api.paystack.co/bank"
+    url ="https://api.paystack.co/bank?country=nigeria"
     response = requests.get(url=url, headers=headers)
-    return response.json()
+    
+    return response
+        
+    
+

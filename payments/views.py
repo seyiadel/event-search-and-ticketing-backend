@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import views, response
 from ticket_app.models import Ticket
 from payments.serializers import CheckoutSerializer, BankDetailSerializer, WithdrawEventEarningSerializer
-from payments.models import Checkout, EventInfo, BankDetail
+from payments.models import Checkout, EventInfo, BankDetail, ListOfBank, WithdrawEventEarning
 from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings
 from organizations.models import Organization
 import uuid
@@ -47,14 +47,14 @@ class WebHookView(views.APIView):
            tickets.save()
            return response.Response(status=200)
         elif request.data['event'] == "transfer.success":
-            payout = WithdrawEarningsView.objects.get(reference_code=request.data['data']['reference'])
+            payout = WithdrawEventEarning.objects.get(reference_code=request.data['data']['reference'])
             payout.event.earnings -= request.data['data']['amount']
             payout.status == "Transfer Successful"
             payout.save()
             print(request.data)
             return response.Response(status=200)
         elif request.data['event'] == "transfer.failed":
-            retry_payout = WithdrawEarningsView.objects.get(reference_code=request.data['data']['reference'])
+            retry_payout = WithdrawEventEarning.objects.get(reference_code=request.data['data']['reference'])
             amount= retry_payout.event.earnings * 100
             recipient_code = retry_payout.bank_detail.recipient_code
             unique_reference = retry_payout.reference_code
@@ -69,7 +69,7 @@ class WebHookView(views.APIView):
 class OrganzationBankDetails(views.APIView):
 
     def post(self, request, organization_id):
-        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
+        organization = Organization.objects.get(id=organization_id)
         serializer = BankDetailSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):     
           serializer.validated_data['owner'] = organization
