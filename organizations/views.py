@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from rest_framework import views, response
+from rest_framework import views, response, permissions
 from organizations.serializers import OrganizationSerializer
 from organizations.models import Organization
 from tasks import verify_bank_details, create_tranfer_recipient
 # Create your views here.
 
 class OrganizationView(views.APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         
@@ -25,6 +27,7 @@ class OrganizationView(views.APIView):
 
 
 class SingleOrganizationView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, organization_id):
         organization = Organization.objects.get(id=organization_id)

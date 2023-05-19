@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import views, response
+from rest_framework import views, response, permissions
 from ticket_app.models import Ticket
 from payments.serializers import CheckoutSerializer, BankDetailSerializer, WithdrawEventEarningSerializer
 from payments.models import Checkout, EventInfo, BankDetail, WithdrawEventEarning
@@ -67,9 +67,11 @@ class WebHookView(views.APIView):
 
 
 class OrganzationBankDetails(views.APIView):
+    
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, organization_id):
-        organization = Organization.objects.get(id=organization_id)
+        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
         serializer = BankDetailSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):     
           serializer.validated_data['owner'] = organization
@@ -88,8 +90,10 @@ class ListBanks(views.APIView):
 
 class WithdrawEarningsView(views.APIView):
 
+    permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request,organization_id, event_id):
-        organization = Organization.objects.get(id=organization_id)
+        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
         event = EventInfo.objects.filter(organizer=organization).get(id=event_id)
         bank_detail = BankDetail.objects.get(owner=organization)
         serializer = WithdrawEventEarningSerializer(data=request.data)

@@ -7,7 +7,7 @@ from ticket_app.models import Ticket
 
 class CreateEventTicket(views.APIView):
 
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, event_id):
         event = models.EventInfo.objects.filter(id=event_id).first()
