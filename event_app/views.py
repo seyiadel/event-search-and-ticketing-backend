@@ -29,7 +29,7 @@ class EventsView(views.APIView):
     @swagger_auto_schema(EventSerializer())
     def get(self, request):
         "Get all Events on the homepage"
-        event = EventInfo.objects.all()
+        event = EventInfo.objects.filter(is_published=True)
         serializer = EventSerializer(event, many=True)
         return Response(data=serializer.data, status=200)
 

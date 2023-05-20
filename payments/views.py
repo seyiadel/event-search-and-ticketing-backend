@@ -6,6 +6,7 @@ from payments.models import Checkout, EventInfo, BankDetail, WithdrawEventEarnin
 from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings
 from organizations.models import Organization
 import uuid
+from email_tasks import send_checkout_email
 # Create your views here.
 
 
@@ -44,6 +45,7 @@ class WebHookView(views.APIView):
            tickets.total_checkout_amount += checkout.amount
            tickets.event.earnings += charge_free_earning
            tickets.save()
+           send_checkout_email(checkout.user, tickets.event.name)
            return response.Response(status=200)
         elif request.data['event'] == "transfer.success":
             payout = WithdrawEventEarning.objects.get(reference_code=request.data['data']['reference'])
