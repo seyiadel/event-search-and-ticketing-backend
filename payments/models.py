@@ -28,7 +28,7 @@ class BankDetail(models.Model):
     account_name = models.CharField(max_length= 50, blank=True)
     recipient_code = models.CharField(max_length= 45, blank=True)
     owner = models.OneToOneField(Organization, on_delete=models.CASCADE, blank=True)
-    # created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.bank_name} {self.account_number} - {self.owner.name}"
 

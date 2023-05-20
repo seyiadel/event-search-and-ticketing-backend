@@ -15,7 +15,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="PassMaster API v1.0",
+      default_version='v1.0',
+      description="Event Ticketing API: Create Organization, Events, Tickets and Sell Tickets",
+      terms_of_service="https://www.github.com/seyiadel",
+      contact=openapi.Contact(email=""),
+      license=openapi.License(name="MIT License"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny],
+)
 
 
 urlpatterns = [
@@ -25,4 +42,5 @@ urlpatterns = [
     path("", include('ticket_app.urls')),
     path("", include('payments.urls')),
     path("",include('organizations.urls')),
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

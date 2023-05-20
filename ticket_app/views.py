@@ -11,7 +11,6 @@ class CreateEventTicket(views.APIView):
 
     def post(self, request, event_id):
         event = models.EventInfo.objects.filter(id=event_id).first()
-        print(event)
         if not event:
             return response.Response(data=f"Event {event_id} do not exist", status=404)
         serializer = TicketSerializer(data=request.data)

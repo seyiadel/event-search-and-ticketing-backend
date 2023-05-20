@@ -23,7 +23,6 @@ class CheckOutView(views.APIView):
             email = serializer.validated_data['user']
             amount = ticket.price * serializer.validated_data['quantity'] *100
             payment_detail=paystack_charge(email, amount)
-            serializer.validated_data['status'] = "Pending"
             serializer.validated_data['amount'] = amount/100
             serializer.validated_data['paystack_reference'] = payment_detail['data']['reference']
             serializer.save()

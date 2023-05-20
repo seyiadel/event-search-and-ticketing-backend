@@ -8,6 +8,11 @@ class CheckoutSerializer(serializers.ModelSerializer):
         model = Checkout
         fields = "__all__"
 
+    def create(self, validated_data):
+        serializer.validated_data['status'] = "Pending"
+        return Checkout.objects.create(**validated_data)
+
+
     
 class BankDetailSerializer(serializers.ModelSerializer):
     organization = serializers.PrimaryKeyRelatedField(read_only=True)

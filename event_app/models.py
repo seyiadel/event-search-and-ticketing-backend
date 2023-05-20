@@ -27,11 +27,13 @@ class EventInfo(models.Model):
     venue = models.TextField()
     location = models.CharField(default="Lagos", max_length=32)
     country = models.CharField(default="Nigeria", max_length=32)
-    time = models.TimeField()
-    date = models.DateField()
+    start_time = models.TimeField()
+    start_date = models.DateField()
+    end_time = models.TimeField()
+    end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     organizer = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='events')
-    earnings = models.IntegerField()
+    earnings = models.IntegerField(null=True)
     def __str__(self):
         return self.name
 

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # Third-Party Apps
     'rest_framework',
     'dotenv',
+    'drf_yasg',
     
     #T-PA Oauth
     'allauth',
