@@ -30,10 +30,11 @@ class EventInfo(models.Model):
     start_time = models.TimeField()
     start_date = models.DateField()
     end_time = models.TimeField()
-    end_date = models.DateField()
+    end_date = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     organizer = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='events')
     earnings = models.IntegerField(null=True)
+    is_published = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 
