@@ -3,10 +3,9 @@ from rest_framework import views, response, permissions
 from ticket_app.models import Ticket
 from payments.serializers import CheckoutSerializer, BankDetailSerializer, WithdrawEventEarningSerializer
 from payments.models import Checkout, EventInfo, BankDetail, WithdrawEventEarning
-from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings
+from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings, send_checkout_email
 from organizations.models import Organization
 import uuid
-from email_tasks import send_checkout_email
 # Create your views here.
 
 

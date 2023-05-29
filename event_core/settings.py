@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'dotenv',
     'drf_yasg',
-    
+    'django_celery_results',
     #T-PA Oauth
     'allauth',
     'allauth.account',
@@ -164,12 +164,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+# CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = {'application/json'}
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Paris'
+CELERY_RESULT_BACKEND = 'django-db'
+
+BREVO_API_KEY = os.getenv('BREVO_API_KEY')
+
+
+EMAIL_HOST = "smtp-relay.sendinblue.com"
+EMAIL_HOST_USER = 'farmdistronigeria@gmail.com' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
