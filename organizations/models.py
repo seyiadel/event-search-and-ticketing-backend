@@ -7,7 +7,7 @@ class Organization(models.Model):
     bio = models.TextField()
     tickets_sold = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey('event_app.User', on_delete=models.CASCADE)
+    creator = models.ForeignKey('event_app.User', on_delete=models.CASCADE, blank=True)
     
     def __str__(self):
         return f"{self.name}"

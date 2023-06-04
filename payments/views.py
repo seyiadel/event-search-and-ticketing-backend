@@ -6,6 +6,7 @@ from payments.models import Checkout, EventInfo, BankDetail, WithdrawEventEarnin
 from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings, send_checkout_email
 from organizations.models import Organization
 import uuid
+from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 
 
@@ -70,6 +71,7 @@ class OrganzationBankDetails(views.APIView):
     
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(request_body=BankDetailSerializer)
     def post(self, request, organization_id):
         organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
         serializer = BankDetailSerializer(data=request.data)

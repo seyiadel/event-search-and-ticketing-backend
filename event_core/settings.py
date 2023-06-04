@@ -28,6 +28,8 @@ SECRET_KEY = "django-insecure-cya!m3qtq5u0z4@0c8@2+x27$+lyff%h)dxm2am_luwnp*$@ct
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = ['https://ca75-197-211-63-100.ngrok-free.app']
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -164,6 +166,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+       'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      },
+       "google_auth":{
+            "type":"apikey",
+            "redirectUrl":"127.0.0.1:8000/accounts/google/login",
+            "flow":"accessCode",
+            "scopes":{
+                "write:superuser":"Super You, modify all operation",
+                "read:user":"Just Read the damn thing"
+            }
+        }
+    },
+}
 
 # CELERY SETTINGS
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'

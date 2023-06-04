@@ -17,6 +17,7 @@ class OrganizationView(views.APIView):
 
         serializer = OrganizationSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
+            serializer.validated_data['creator'] = request.user
             serializer.save()
             return response.Response(data=serializer.data, status=201)
         return response.Response(data=serializer.errors, status=400)

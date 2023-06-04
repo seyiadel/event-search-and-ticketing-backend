@@ -8,6 +8,11 @@ from event_app.models import EventInfo
 from organizations.models import Organization
 from drf_yasg.utils import swagger_auto_schema
 
+
+class MyView(views.APIView):
+    def get(self, request):
+        return Response(data={'user':request.user.email})
+
 class SingleEventView(views.APIView):
 
     permission_classes = (permissions.AllowAny,)
