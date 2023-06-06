@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 def send_checkout_email(self, receiver_email_address, event_name):
     subject, from_email, to = "Knock Knock, Tickets from PassMaster Here!", "farmdistronigeria@gmail.com", receiver_email_address
     text_content = f"Hello {receiver_email_address}, "
-    html_content = f"<p>This is your confirmation ticket mail for<strong>{event_name}</strong></p>"
+    html_content = f"<p>This is your confirmation ticket mail for <strong>{event_name}</strong></p>"
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
     msg.send(fail_silently=False)
@@ -19,11 +19,11 @@ def send_checkout_email(self, receiver_email_address, event_name):
 
 
 def charged_ticket_price(price):
-    price += price * 0.09
+    price += price * 9/100
     return price
 
 def remove_charge_from_earnings(earning):
-    earning -= earning * 0.09
+    earning -= earning * 9/100
     return earning
 
 headers= {"Authorization":f"Bearer {settings.PAYSTACK_SECRET_KEY}"}

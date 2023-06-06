@@ -9,7 +9,7 @@ class CheckoutSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        serializer.validated_data['status'] = "Pending"
+        validated_data['status'] = "Pending"
         return Checkout.objects.create(**validated_data)
 
 

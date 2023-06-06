@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-cya!m3qtq5u0z4@0c8@2+x27$+lyff%h)dxm2am_luwnp*$@ct
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CSRF_TRUSTED_ORIGINS = ['https://ca75-197-211-63-100.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://50c1-197-211-63-96.ngrok-free.app',]
 
 ALLOWED_HOSTS = ['*']
 
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'dotenv',
     'drf_yasg',
     'django_celery_results',
+    "corsheaders",
     #T-PA Oauth
     'allauth',
     'allauth.account',
@@ -66,12 +67,16 @@ SITE_ID = 1
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+
+CORS_ALLOWED_ORIGINS = ['https://50c1-197-211-63-96.ngrok-free.app',]
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {

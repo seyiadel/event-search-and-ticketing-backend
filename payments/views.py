@@ -36,9 +36,10 @@ class WebHookView(views.APIView):
     def post(self,request):
         if request.data['event'] == "charge.success":
             # Log here - Request charge was a success
-           checkout = Checkout.objects.get(user=request.data['data']['customer']['email'])
-           checkout.status = "Paid"
+           checkout = Checkout.objects.filter(user=request.data['data']['customer']['email']).get(paystack_reference=request.data['data']['reference'])
+           checkout.status ==  "Paid"
            checkout.save()
+           
            tickets = Ticket.objects.get(id=checkout.ticket.id)
            tickets.available_tickets -= checkout.quantity
            charge_free_earning = remove_charge_from_earnings(checkout.amount)

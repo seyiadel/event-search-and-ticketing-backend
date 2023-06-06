@@ -54,7 +54,7 @@ admin.site.register(BankDetail, BankDetailAdmin)
 
 class CheckoutAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
-    list_display = ['event_name','status', 'quantity', 'user', 'ticket_type', 'amount', 'paystack_reference']
+    list_display = ['event_name','status', 'quantity', 'user', 'ticket_type', 'amount', 'paystack_reference', 'created_at']
     list_filter = ['ticket__event__name','status', 'ticket__status',]
     search_fields = ['status','user','ticket__event__name']
 
