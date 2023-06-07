@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-cya!m3qtq5u0z4@0c8@2+x27$+lyff%h)dxm2am_luwnp*$@ct
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CSRF_TRUSTED_ORIGINS = ['https://50c1-197-211-63-96.ngrok-free.app',]
+CSRF_TRUSTED_ORIGINS = ['',]
 
 ALLOWED_HOSTS = ['*']
 
@@ -76,7 +76,7 @@ MIDDLEWARE = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = ['https://50c1-197-211-63-96.ngrok-free.app',]
+CORS_ALLOWED_ORIGINS = ['',]
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {

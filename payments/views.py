@@ -36,17 +36,18 @@ class WebHookView(views.APIView):
     def post(self,request):
         if request.data['event'] == "charge.success":
             # Log here - Request charge was a success
-           checkout = Checkout.objects.filter(user=request.data['data']['customer']['email']).get(paystack_reference=request.data['data']['reference'])
-           checkout.status ==  "Paid"
-           checkout.save()
+           filtered_checkout = Checkout.objects.filter(user=request.data['data']['customer']['email'])
+           referenced_checkout = filtered_checkout.get(paystack_reference=request.data['data']['reference'])
+           referenced_checkout.status = "Paid"
+           referenced_checkout.save()
            
-           tickets = Ticket.objects.get(id=checkout.ticket.id)
-           tickets.available_tickets -= checkout.quantity
-           charge_free_earning = remove_charge_from_earnings(checkout.amount)
-           tickets.total_checkout_amount += checkout.amount
+           tickets = Ticket.objects.get(id=referenced_checkout.ticket.id)
+           tickets.available_tickets -= referenced_checkout.quantity
+           charge_free_earning = remove_charge_from_earnings(referenced_checkout.amount)
+           tickets.total_checkout_amount += referenced_checkout.amount
            tickets.event.earnings += charge_free_earning
            tickets.save()
-           send_checkout_email(checkout.user, tickets.event.name)
+           send_checkout_email(referenced_checkout.user, tickets.event.name)
            return response.Response(status=200)
         elif request.data['event'] == "transfer.success":
             payout = WithdrawEventEarning.objects.get(reference_code=request.data['data']['reference'])
