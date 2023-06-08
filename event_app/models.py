@@ -20,11 +20,17 @@ class User(AbstractUser):
         ordering = ['date_joined',]
 
 
+EVENT_TYPE = [
+    ("Paid", "Paid"),
+    ("Free", "Free"),
+]
+
 class EventInfo(models.Model):
     name = models.TextField()
     description = models.TextField()
     artwork = models.ImageField(null=True)
     venue = models.TextField()
+    type = models.CharField(choices=EVENT_TYPE, max_length=40)
     location = models.CharField(default="Lagos", max_length=32)
     country = models.CharField(default="Nigeria", max_length=32)
     start_time = models.TimeField()

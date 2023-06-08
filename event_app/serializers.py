@@ -12,5 +12,5 @@ class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = EventInfo
-        fields = ['id','name','description', 'artwork','venue', 'location','country','start_time','start_date','end_time','end_date','created_at','organizer','earnings', 'is_published']
+        fields = ['id','name','description', 'artwork','venue', 'location','country','type','start_time','start_date','end_time','end_date','created_at','organizer','earnings', 'is_published']
 

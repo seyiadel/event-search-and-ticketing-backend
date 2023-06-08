@@ -11,5 +11,8 @@ class TicketSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
+        if validated_data['event'].type == "Free":
+            validated_data['price'] = 0
+            return Ticket.objects.create(**validated_data)
         validated_data['price'] = charged_ticket_price(validated_data['price'])
         return Ticket.objects.create(**validated_data)
