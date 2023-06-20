@@ -1,0 +1,1 @@
+web: python manage.py migrate && gunicorn event_core.wsgi --log-file 
