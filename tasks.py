@@ -15,6 +15,25 @@ def send_checkout_email(self, receiver_email_address, event_name):
     msg.send(fail_silently=False)
     return "Ticket mail sent"
 
+@shared_task(bind=True)
+def send_ticket_sale_mail(organizer_name,organizer_mail,event_name,ticket_name):
+    subject, from_email, to = "Your Event Tickets Welfare from PassMaster Here!", "farmdistronigeria@gmail.com", organizer_mail
+    text_content = f"Hello {organizer_name}, "
+    html_content = f"<p>Your {ticket_name} ticket sale for<strong>{event_name}</strong>.</p>\n<p>We are few tickets away from being sold out!!,</p>\n<p>You've got this!, {organizer_name}</p>"
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send(fail_silently=False)
+    return "Ticket sale mail sent"
+
+@shared_task(bind=True)
+def send_tickets_sold_out(organizer_name, organizer_mail, event_name, ticket_name):
+    subject, from_email, to = "Your Event Tickets Welfare from PassMaster Here!", "farmdistronigeria@gmail.com", organizer_mail
+    text_content = f"Hurray {organizer_name}!!!, "
+    html_content = f"<p>Your {ticket_name} ticket sale for<strong>{event_name}</strong>has been sold out.</p>\n<p>You want to more tickets sold? Create a new ticket.</p>\n<p>You've got this!, {organizer_name}</p>"
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send(fail_silently=False)
+    return "Sold out tickets mail sent"
 
 
 

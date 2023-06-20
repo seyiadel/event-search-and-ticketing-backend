@@ -3,7 +3,7 @@ from rest_framework import views, response, permissions
 from ticket_app.models import Ticket
 from payments.serializers import CheckoutSerializer, BankDetailSerializer, WithdrawEventEarningSerializer
 from payments.models import Checkout, EventInfo, BankDetail, WithdrawEventEarning
-from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings, send_checkout_email
+from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_from_earnings, send_checkout_email, send_ticket_sale_mail, send_tickets_sold_out
 from organizations.models import Organization
 import uuid
 from drf_yasg.utils import swagger_auto_schema
@@ -20,13 +20,20 @@ class CheckOutView(views.APIView):
             return response.Response(data="Ticket do not exist and not assigned to event", status=404)
         serializer = CheckoutSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.validated_data['ticket'] = ticket
-            email = serializer.validated_data['user']
-            amount = ticket.price * serializer.validated_data['quantity'] *100
-            payment_detail=paystack_charge(email, amount)
-            serializer.validated_data['amount'] = amount/100
+            serializer.validated_data['ticket'] = ticket 
+            ticket_revenue = ticket.price * serializer.validated_data['quantity'] *100
+            if ticket.event.type == "Free":
+                email = serializer.validated_data['user']
+                serializer.validated_data['amount'] = 0
+                serializer.validated_data['paystack_reference']
+                mail_response = send_checkout_email(email, ticket.event.name)
+                return response.Response(data=mail_response, status=200)
+            
+            payment_detail = paystack_charge(email, ticket_revenue)
+            serializer.validated_data['amount'] = ticket_revenue/100
             serializer.validated_data['paystack_reference'] = payment_detail['data']['reference']
             serializer.save()
+        
             return response.Response(data={"checkout":serializer.data, "pay":payment_detail}, status=200)
         return response.Response(data=serializer.errors, status=400)
 
@@ -48,7 +55,16 @@ class WebHookView(views.APIView):
            tickets.event.earnings += charge_free_earning
            tickets.save()
            send_checkout_email(referenced_checkout.user, tickets.event.name)
-           return response.Response(status=200)
+           organizer_mail=tickets.event.organizer.creator.email
+           organizer_name = tickets.event.organizer.creator.username
+           event_name = tickets.event.name
+           ticket_name = tickets.status
+           if tickets.available_tickets == 30:
+               send_ticket_sale_mail(organizer_name,organizer_mail, event_name, ticket_name)
+               return response.Response(status=200)
+           elif tickets.available_tickets == 0:
+               send_tickets_sold_out(organizer_name,organizer_mail, event_name, ticket_name)
+               return response.Response(status=200)
         elif request.data['event'] == "transfer.success":
             payout = WithdrawEventEarning.objects.get(reference_code=request.data['data']['reference'])
             payout.event.earnings -= request.data['data']['amount']
