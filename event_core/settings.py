@@ -30,7 +30,7 @@ DEBUG = True
 
 CSRF_TRUSTED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app',]
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
