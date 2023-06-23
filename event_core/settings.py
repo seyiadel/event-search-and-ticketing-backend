@@ -23,10 +23,10 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-cya!m3qtq5u0z4@0c8@2+x27$+lyff%h)dxm2am_luwnp*$@ct"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 CSRF_TRUSTED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app',]
 
