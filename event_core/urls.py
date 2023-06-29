@@ -30,7 +30,7 @@ schema_view = get_schema_view(
       contact=openapi.Contact(email=""),
       license=openapi.License(name="MIT License"),
    ),
-#    url='https://event-ticketing-test-link-production.up.railway.app/',
+   url='https://event-ticketing-test-link-production.up.railway.app/',
    public=True,
    permission_classes=[permissions.AllowAny],
 )
