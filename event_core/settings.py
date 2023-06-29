@@ -30,7 +30,7 @@ DEBUG = os.getenv('DEBUG')
 
 CSRF_TRUSTED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app',]
 
-ALLOWED_HOSTS = ['event-ticketing-test-link-production.up.railway.app','127.0.0.1', 'localhost',]
+ALLOWED_HOSTS = ['event-ticketing-test-link-production.up.railway.app','127.0.0.1',]
 
 
 # Application definition
@@ -114,8 +114,12 @@ REST_FRAMEWORK = {
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv('PGNAME'),
+        "USER": os.getenv('PGUSER'),
+        "PASSWORD": os.getenv('PGPASSWORD'),
+        "HOST": os.getenv('PGHOST'),
+        "PORT": os.getenv('PGPORT'),
     }
 }
 
