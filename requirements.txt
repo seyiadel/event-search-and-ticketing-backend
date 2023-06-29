@@ -15,11 +15,11 @@ cryptography==40.0.2
 defusedxml==0.7.1
 Deprecated==1.2.13
 Django==4.2.1
-django-allauth==0.54.0
 django-celery-results==2.5.1
 django-cors-headers==4.0.0
 django-oauth-toolkit==2.2.0
 django-rest-framework==0.1.0
+django-rest-knox==4.2.0
 djangorestframework==3.14.0
 drf-yasg==1.21.5
 ecdsa==0.18.0
