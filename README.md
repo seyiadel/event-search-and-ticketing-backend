@@ -15,7 +15,8 @@ To integrate the backend API to your frontend, here is the URL and the endpoints
 ### URL: https://event-ticketing-test-link-production.up.railway.app/
 Swagger Documentation: `/swagger/` - To test API, know Required Data to be sent and Response to be received.
 ## Endpoints per Organizer Workflow:
-* GET `/accounts/google/login` - User Registration through Google SignIn [Oauth2.0]
+* POST `/sign-up/` - Register / Sign Up User to the API. Parameters - [first_name, last_name, password, confirm_password].
+* POST`/login/` - Logs In a User ; creating the user instance. Parameters -[email,password].
 * POST `/organization/create` - Create an Organization for User(organization is to group events created to a sector, a user can create an event for different organization)
 * POST `/dashboard/organization/{organization_id}/add-bank-detail/` - To enable user withdraw ticket earnings per event in an organization. Note: To add the bank code, you send a GET request to `/list-bank/` which list the available banks, then you pull the bank name and bank code from the list - Associating the bank name  and bank code as an ENUM, the user selects the bank name but the bank code is sent to the API to verify the details given and get stored.
 * POST `/dashboard/organization/{organization_id}/event/create` - Create event by inputing its details such as Event[name, description, venue, location, country, type, start_time, start_date, end_time, end_date].
