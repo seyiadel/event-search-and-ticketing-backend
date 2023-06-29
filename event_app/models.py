@@ -5,7 +5,7 @@ from organizations.models import Organization
 # Create your models here.
 
 class User(AbstractUser):
-    username = models.CharField(max_length=67,)
+    username = None
     email = models.EmailField(unique=True)
 
     USERNAME_FIELD = 'email'

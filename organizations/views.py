@@ -1,14 +1,14 @@
-from django.shortcuts import render
 from rest_framework import views, response, permissions
 from organizations.serializers import OrganizationSerializer
 from organizations.models import Organization
-from tasks import verify_bank_details, create_tranfer_recipient
 from drf_yasg.utils import swagger_auto_schema
+from knox.auth import TokenAuthentication as KnoxTokenAuthentication
 # Create your views here.
 
 class OrganizationView(views.APIView):
 
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [KnoxTokenAuthentication,]
 
     @swagger_auto_schema(request_body=OrganizationSerializer)
     def post(self, request):
@@ -32,6 +32,7 @@ class OrganizationView(views.APIView):
 
 class SingleOrganizationView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [KnoxTokenAuthentication,]
 
     @swagger_auto_schema(OrganizationSerializer)
     def get(self, request, organization_id):

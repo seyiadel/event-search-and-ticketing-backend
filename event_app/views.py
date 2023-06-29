@@ -1,17 +1,48 @@
-from django.shortcuts import render
-# Create your views here.
-
-from rest_framework import generics, permissions, authentication, views
+from rest_framework import permissions, views
 from rest_framework.response import Response
-from event_app.serializers import EventSerializer
+from event_app.serializers import EventSerializer, UserSerializer, LoginUserSerializer
 from event_app.models import EventInfo
 from organizations.models import Organization
 from drf_yasg.utils import swagger_auto_schema
+from django.contrib.auth import login
+from knox.views import LoginView as KnoxLoginView
+from knox.auth import TokenAuthentication as KnoxTokenAuthentication
 
 
 class MyView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated,]
+    authentication_classes =[KnoxTokenAuthentication,]
+
     def get(self, request):
         return Response(data={'user':request.user.email})
+    
+
+class SignUpView(views.APIView):
+    permission_classes = [permissions.AllowAny,]
+
+    @swagger_auto_schema(request_body=UserSerializer)
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(data=serializer.data, status=200)
+        return Response(serializer.errors)
+
+class LogInView(KnoxLoginView):
+
+    permission_classes = [permissions.AllowAny,]
+    
+    @swagger_auto_schema(request_body=LoginUserSerializer)
+    def post(self, request):
+       serializer = LoginUserSerializer(data=request.data)
+       if serializer.is_valid(raise_exception=True):
+           user = serializer.validated_data['user']
+           login(request, user)
+           return super().post(request, format=None)
+           
+
+
+    
 
 class SingleEventView(views.APIView):
 
@@ -39,8 +70,9 @@ class EventsView(views.APIView):
         return Response(data=serializer.data, status=200)
 
 class CreateEventView(views.APIView):
-
+    """Logged In User to create events"""
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = [KnoxTokenAuthentication,]
 
     @swagger_auto_schema(request_body=EventSerializer)
     def post(self, request, organization_id):
@@ -55,6 +87,7 @@ class CreateEventView(views.APIView):
 class UpdateDeleteOrganizedEventView(views.APIView):
      
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = [KnoxTokenAuthentication,]
 
     @swagger_auto_schema(request_body=EventSerializer)
     def put(self, request, organization_id, event_id):
@@ -76,6 +109,7 @@ class UpdateDeleteOrganizedEventView(views.APIView):
 class OrganizationEvents(views.APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = [KnoxTokenAuthentication,]
 
     @swagger_auto_schema(EventSerializer)
     def get(self, request, organization_id):

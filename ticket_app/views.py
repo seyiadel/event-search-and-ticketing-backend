@@ -4,12 +4,14 @@ from ticket_app.serializers import TicketSerializer
 from event_app import models
 from ticket_app.models import Ticket
 from drf_yasg.utils import swagger_auto_schema
+from knox.auth import TokenAuthentication as KnoxTokenAuthentication
 
 # Create your views here.
 
 class CreateEventTicket(views.APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = [KnoxTokenAuthentication,]
 
     @swagger_auto_schema(request_body=TicketSerializer)
     def post(self, request, event_id):

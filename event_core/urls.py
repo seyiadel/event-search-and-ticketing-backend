@@ -30,7 +30,7 @@ schema_view = get_schema_view(
       contact=openapi.Contact(email=""),
       license=openapi.License(name="MIT License"),
    ),
-   url='https://event-ticketing-test-link-production.up.railway.app/',
+#    url='https://event-ticketing-test-link-production.up.railway.app/',
    public=True,
    permission_classes=[permissions.AllowAny],
 )
@@ -39,7 +39,6 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include('event_app.urls')),
-    path('accounts/', include('allauth.urls')),
     path("", include('ticket_app.urls')),
     path("", include('payments.urls')),
     path("",include('organizations.urls')),

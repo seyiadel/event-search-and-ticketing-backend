@@ -1,7 +1,9 @@
 from django.contrib import admin
 from event_app.models import User, EventInfo
 
-admin.site.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['email','first_name', 'last_name']
+admin.site.register(User, UserAdmin)
 
 class EventInfoAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"

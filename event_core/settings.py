@@ -30,7 +30,7 @@ DEBUG = os.getenv('DEBUG')
 
 CSRF_TRUSTED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app',]
 
-ALLOWED_HOSTS = ['event-ticketing-test-link-production.up.railway.app',]
+ALLOWED_HOSTS = ['event-ticketing-test-link-production.up.railway.app','127.0.0.1', 'localhost',]
 
 
 # Application definition
@@ -55,11 +55,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_celery_results',
     "corsheaders",
+    'knox',
     #T-PA Oauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    
+    
 ]
 
 SITE_ID = 1
@@ -78,27 +77,6 @@ MIDDLEWARE = [
 
 
 CORS_ALLOWED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app',]
-
-# Provider specific settings
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY"),
-            'secret': os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"),
-            'key': ''
-        },
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
-    }
-}
 
 ROOT_URLCONF = "event_core.urls"
 
@@ -125,23 +103,11 @@ TEMPLATES = [
 WSGI_APPLICATION = "event_core.wsgi.application"
 
 
-AUTHENTICATION_BACKENDS = [
-    
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-    
-]
-
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
-ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
-LOGIN_REDIRECT_URL = '/accounts/email/' # default to /accounts/profile
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'knox.auth.TokenAuthentication',],
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -180,16 +146,8 @@ SWAGGER_SETTINGS = {
             'name': 'Authorization',
             'in': 'header'
       },
-       "google_auth":{
-            "type":"apikey",
-            "redirectUrl":"127.0.0.1:8000/accounts/google/login",
-            "flow":"accessCode",
-            "scopes":{
-                "write:superuser":"Super You, modify all operation",
-                "read:user":"Just Read the damn thing"
-            }
+       
         }
-    },
 }
 
 # CELERY SETTINGS

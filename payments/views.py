@@ -7,6 +7,7 @@ from tasks import paystack_charge , list_banks, tranfer_earnings, remove_charge_
 from organizations.models import Organization
 import uuid
 from drf_yasg.utils import swagger_auto_schema
+from knox.auth import TokenAuthentication as KnoxTokenAuthentication
 # Create your views here.
 
 
@@ -88,6 +89,7 @@ class WebHookView(views.APIView):
 class OrganzationBankDetails(views.APIView):
     
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [KnoxTokenAuthentication,]
 
     @swagger_auto_schema(request_body=BankDetailSerializer)
     def post(self, request, organization_id):
@@ -111,7 +113,9 @@ class ListBanks(views.APIView):
 class WithdrawEarningsView(views.APIView):
 
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [KnoxTokenAuthentication,]
 
+    @swagger_auto_schema(request_body=WithdrawEventEarningSerializer)
     def post(self, request,organization_id, event_id):
         organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
         event = EventInfo.objects.filter(organizer=organization).get(id=event_id)

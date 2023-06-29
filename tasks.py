@@ -5,6 +5,11 @@ from celery import shared_task
 from django.core.mail import send_mail
 
 
+def google_authorization_code(self,callback_url, client_id):
+    url = f'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri={callback_url}&prompt=consent&response_type=token&client_id={client_id}&scope=profile%20email'
+    response = requests.post(url=url)
+    return response
+
 @shared_task(bind=True)
 def send_checkout_email(self, receiver_email_address, event_name):
     subject, from_email, to = "Knock Knock, Tickets from PassMaster Here!", "farmdistronigeria@gmail.com", receiver_email_address
