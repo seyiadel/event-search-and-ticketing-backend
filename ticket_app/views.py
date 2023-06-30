@@ -5,7 +5,7 @@ from event_app import models
 from ticket_app.models import Ticket
 from drf_yasg.utils import swagger_auto_schema
 from knox.auth import TokenAuthentication as KnoxTokenAuthentication
-
+from payments import models, serializers
 # Create your views here.
 
 class CreateEventTicket(views.APIView):
@@ -26,10 +26,16 @@ class CreateEventTicket(views.APIView):
         return response.Response(data=serializer.errors, status = 400)
         
 class GetAllTicketPerEvent(views.APIView):
-
+    @swagger_auto_schema(TicketSerializer)
     def get(self, request, event_id):
         tickets = Ticket.objects.filter(event=event_id)
         serializer = TicketSerializer(tickets, many=True)
         return response.Response(data=serializer.data, status= 200)
     
 
+class GetEventAttendeeDetails(views.APIView):
+    @swagger_auto_schema(TicketSerializer)
+    def get(self, request, ticket_id):
+        checked_out_attendee = models.Checkout.objects.filter(ticket=ticket_id)
+        serializer = serializers.CheckoutSerializer(checked_out_attendee, many=True)
+        return response.Response(data=serializer.data, status=200)
