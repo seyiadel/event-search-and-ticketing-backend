@@ -104,7 +104,8 @@ class OrganzationBankDetails(views.APIView):
 
 
 class ListBanks(views.APIView):
-
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [KnoxTokenAuthentication,]
     def get(self, request):
         banks = list_banks()
         return response.Response(data=banks)
