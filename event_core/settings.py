@@ -61,8 +61,6 @@ INSTALLED_APPS = [
     
 ]
 
-SITE_ID = 1
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -76,7 +74,7 @@ MIDDLEWARE = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app',]
+CORS_ALLOWED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app','http://localhost', 'http://127.0.0.1']
 
 ROOT_URLCONF = "event_core.urls"
 
