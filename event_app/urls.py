@@ -1,5 +1,5 @@
 from django.urls import path, re_path, include
-from event_app.views import MyView,EventsView, SingleEventView, CreateEventView, UpdateDeleteOrganizedEventView, OrganizationEvents, SignUpView, LogInView
+from event_app.views import MyView,EventsView, SingleEventView, CreateEventView, UpdateDeleteOrganizedEventView, OrganizationEvents, SignUpView, LogInView, PublishEvents
 from knox import views
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
      path("dashboard/organization/<int:organization_id>/event/create", CreateEventView.as_view(), name= 'organized-event'),
      path("dashboard/organization/<int:organization_id>/event/<int:event_id>/", UpdateDeleteOrganizedEventView.as_view(), name='edit/delete-event'),
      path("dashboard/organization/<int:organization_id>/events", OrganizationEvents.as_view(), name= 'event-by-organization'),
+     path("dashboard/organization/<int:organization_id>/event/<int:event_id>/publish-event/", PublishEvents.as_view(), name='publish_event'),
 ]

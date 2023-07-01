@@ -84,6 +84,22 @@ class CreateEventView(views.APIView):
             return Response(data=serializer.data, status=201)
         return Response(data=serializer.errors, status=400)
 
+class PublishEvents(views.APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = [KnoxTokenAuthentication,]
+
+    @swagger_auto_schema(request_body=EventSerializer)
+    def put(self, request, organization_id, event_id):
+        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
+        event = EventInfo.objects.filter(organizer=organization).get(id=event_id)
+        serializer = EventSerializer(instance=event, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.validated_data['is_published'] = True
+            serializer.save()
+            return Response(data= serializer.data, status = 200)
+        return Response(data=serializer.errors, status= 400)
+
 class UpdateDeleteOrganizedEventView(views.APIView):
      
     permission_classes = (permissions.IsAuthenticated,)
