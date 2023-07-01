@@ -101,7 +101,11 @@ class OrganzationBankDetails(views.APIView):
           return response.Response(data=serializer.data, status=201)
         return response.Response(data=serializer.errors, status=400)
         
-
+    def delete(self, request, organization_id):
+        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
+        bank_detail = BankDetail.objects.filter(owner=organization)
+        bank_detail.delete()
+        return response.Response(data=f"Bank detail -{bank_detail.account_name}, {bank_detail.account_number} of {bank_detail.bank_name} deleted")
 
 class ListBanks(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
