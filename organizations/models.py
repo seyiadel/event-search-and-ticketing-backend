@@ -3,7 +3,7 @@ import uuid
 # Create your models here.
 
 class Organization(models.Model):
-    uuid = models.CharField(default= uuid.uuid4,max_length = 34)
+    uuid = models.UUIDField(default= uuid.uuid4, unique=True)
     name = models.CharField(unique=True, max_length = 50)
     bio = models.TextField()
     tickets_sold = models.IntegerField(null=True)
