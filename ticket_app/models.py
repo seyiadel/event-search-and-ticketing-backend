@@ -3,7 +3,7 @@ from event_app.models import EventInfo
 import uuid
 # Create your models here.
 class Ticket(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    uuid = models.CharField(default= uuid.uuid4, max_length = 34)
     status = models.CharField(default="Regular", max_length= 34)
     created_at = models.DateTimeField(auto_now_add = True)
     price = models.IntegerField()
