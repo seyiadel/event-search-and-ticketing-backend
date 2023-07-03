@@ -6,7 +6,7 @@ import uuid
 
 # Create your models here.
 class Checkout(models.Model):
-    id = models.UUIDField(default=uuid.uuid4,primary_key = True, editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user = models.EmailField()
     ticket = models.ForeignKey(Ticket, on_delete=models.DO_NOTHING, related_name='checkouts')
     quantity = models.IntegerField()
