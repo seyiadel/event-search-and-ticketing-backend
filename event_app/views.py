@@ -7,6 +7,7 @@ from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import login
 from knox.views import LoginView as KnoxLoginView
 from knox.auth import TokenAuthentication as KnoxTokenAuthentication
+from knox.models import AuthToken
 
 
 class MyView(views.APIView):
@@ -38,7 +39,11 @@ class LogInView(KnoxLoginView):
        if serializer.is_valid(raise_exception=True):
            user = serializer.validated_data['user']
            login(request, user)
-           return super().post(request, format=None)
+           return Response(data={
+               "token": AuthToken.objects.create(user)[1],
+               "first_name": request.user.first_name,
+               "last_name":request.user.last_name
+           }, status= 200)
            
 
 

@@ -34,6 +34,10 @@ class GetAllTicketPerEvent(views.APIView):
     
 
 class GetEventAttendeeDetails(views.APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = [KnoxTokenAuthentication,]
+    
     @swagger_auto_schema(TicketSerializer)
     def get(self, request, ticket_id):
         checked_out_attendee = models.Checkout.objects.filter(ticket=ticket_id)

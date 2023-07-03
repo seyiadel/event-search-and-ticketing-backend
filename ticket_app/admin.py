@@ -4,7 +4,7 @@ from ticket_app.models import Ticket
 
 class TicketAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
-    list_display = ['event','organization','status','price', 'available_tickets','total_checkout_amount','start_date', 'end_date']
+    list_display = ['id','event','organization','status','price', 'available_tickets','total_checkout_amount','start_date', 'end_date']
     list_filter = ['event__name','start_date','status']
     search_fields = ['status','event__name','event__organizer__name']
     

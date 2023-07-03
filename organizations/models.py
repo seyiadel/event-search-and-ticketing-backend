@@ -1,8 +1,9 @@
 from django.db import models
-
+import uuid
 # Create your models here.
 
 class Organization(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key = True, editable= False)
     name = models.CharField(unique=True, max_length = 50)
     bio = models.TextField()
     tickets_sold = models.IntegerField(null=True)

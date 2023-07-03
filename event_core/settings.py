@@ -58,8 +58,9 @@ INSTALLED_APPS = [
     'knox',
     #T-PA Oauth
     
-    
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,6 +73,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+REST_KNOX = {
+  'AUTH_HEADER_PREFIX' : "Bearer"
+}
 
 
 CORS_ALLOWED_ORIGINS = ['https://event-ticketing-test-link-production.up.railway.app','http://localhost', 'http://127.0.0.1']

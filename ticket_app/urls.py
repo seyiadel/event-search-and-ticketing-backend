@@ -3,5 +3,5 @@ from ticket_app.views import CreateEventTicket,GetAllTicketPerEvent, GetEventAtt
 urlpatterns = [
     path("dashboard/events/<int:event_id>/tickets/create", CreateEventTicket.as_view(), name='create-ticket'),
     path("events/<int:event_id>/tickets", GetAllTicketPerEvent.as_view(), name='get-tickets'),
-    path("tickets/<int:ticket_id>/event-attendees/", GetEventAttendeeDetails.as_view(), name="event-attendee")
+    path("tickets/<str:ticket_id>/event-attendees/", GetEventAttendeeDetails.as_view(), name="event-attendee")
 ]

@@ -6,6 +6,7 @@ import uuid
 
 # Create your models here.
 class Checkout(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,primary_key = True, editable=False)
     user = models.EmailField()
     ticket = models.ForeignKey(Ticket, on_delete=models.DO_NOTHING, related_name='checkouts')
     quantity = models.IntegerField()
@@ -35,7 +36,7 @@ class BankDetail(models.Model):
 class WithdrawEventEarning(models.Model):
     event = models.OneToOneField(EventInfo, on_delete=models.CASCADE)
     bank_detail = models.ForeignKey(BankDetail, on_delete=models.DO_NOTHING)
-    reference_code = models.UUIDField(uuid.uuid4, max_length = 45, blank=True)
+    reference_code = models.UUIDField(default = uuid.uuid4, max_length = 45, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(default="Pending", max_length=24)
     
