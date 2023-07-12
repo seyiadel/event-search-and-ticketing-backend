@@ -6,7 +6,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
     creator = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Organization
-        fields = "__all__"
+        fields = ['name','bio','creator', 'created_at']
 
     def create(self, validated_data):
        return Organization.objects.create(**validated_data)
