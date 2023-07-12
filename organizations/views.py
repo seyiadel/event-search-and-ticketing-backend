@@ -36,7 +36,13 @@ class SingleOrganizationView(views.APIView):
 
     @swagger_auto_schema(OrganizationSerializer)
     def get(self, request, organization_id):
-        organization = Organization.objects.filter(creator=request.user).get(uuid=organization_id)
+        "Get single organization by Logged In User and organization_id"
+        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
         serializer = OrganizationSerializer(organization)
         return response.Response(data=serializer.data, status=200)
 
+    def delete(self, request, organization_id):
+        "Deleted single organization by Logged In User and organization_id"
+        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
+        organization.delete()
+        return response.Response(data= f"Organization {organization.name} deleted", status=200)
