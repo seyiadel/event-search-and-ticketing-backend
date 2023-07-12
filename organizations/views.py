@@ -36,8 +36,7 @@ class SingleOrganizationView(views.APIView):
 
     @swagger_auto_schema(OrganizationSerializer)
     def get(self, request, organization_id):
-        organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
+        organization = Organization.objects.filter(creator=request.user).get(uuid=organization_id)
         serializer = OrganizationSerializer(organization)
         return response.Response(data=serializer.data, status=200)
-
 
