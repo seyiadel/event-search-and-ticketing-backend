@@ -11,3 +11,9 @@ class OrganizationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
        return Organization.objects.create(**validated_data)
 
+
+class GetOrganizationSerializer(serializers.ModelSerializer):
+    creator = serializers.PrimaryKeyRelatedField(read_only=True)
+    class Meta:
+        model = Organization
+        fields = "__all__"
