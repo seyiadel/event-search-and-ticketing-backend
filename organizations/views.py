@@ -22,7 +22,7 @@ class OrganizationView(views.APIView):
             return response.Response(data=serializer.data, status=201)
         return response.Response(data=serializer.errors, status=400)
 
-    @swagger_auto_schema(GetOrganizationSerializer)
+    @swagger_auto_schema(responses=GetOrganizationSerializer)
     def get(self, request):
         "Get all Organizations by Logged In User"
         organization = Organization.objects.filter(creator=request.user)
@@ -34,12 +34,13 @@ class SingleOrganizationView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [KnoxTokenAuthentication,]
 
-    @swagger_auto_schema(GetOrganizationSerializer)
+    @swagger_auto_schema(responses=GetOrganizationSerializer)
     def get(self, request, organization_id):
         "Get single organization by Logged In User and organization_id"
         organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
         serializer = OrganizationSerializer(organization)
         return response.Response(data=serializer.data, status=200)
+
 
     def delete(self, request, organization_id):
         "Deleted single organization by Logged In User and organization_id"

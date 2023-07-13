@@ -16,4 +16,4 @@ class GetOrganizationSerializer(serializers.ModelSerializer):
     creator = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Organization
-        fields = "__all__"
+        fields = ['id','name','bio','creator', 'created_at']
