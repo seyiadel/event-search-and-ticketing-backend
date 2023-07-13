@@ -1,5 +1,5 @@
 from rest_framework import views, response, permissions
-from organizations.serializers import OrganizationSerializer, GetOrganizationSerializer
+from organizations.serializers import OrganizationSerializer
 from organizations.models import Organization
 from drf_yasg.utils import swagger_auto_schema
 from knox.auth import TokenAuthentication as KnoxTokenAuthentication
@@ -22,7 +22,7 @@ class OrganizationView(views.APIView):
             return response.Response(data=serializer.data, status=201)
         return response.Response(data=serializer.errors, status=400)
 
-    @swagger_auto_schema(responses=GetOrganizationSerializer)
+    @swagger_auto_schema(OrganizationSerializer)
     def get(self, request):
         "Get all Organizations by Logged In User"
         organization = Organization.objects.filter(creator=request.user)
@@ -34,7 +34,7 @@ class SingleOrganizationView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [KnoxTokenAuthentication,]
 
-    @swagger_auto_schema(responses=GetOrganizationSerializer)
+    @swagger_auto_schema(OrganizationSerializer)
     def get(self, request, organization_id):
         "Get single organization by Logged In User and organization_id"
         organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
