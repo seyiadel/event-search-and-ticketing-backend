@@ -91,6 +91,12 @@ class OrganzationBankDetails(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [KnoxTokenAuthentication,]
 
+    def get(self, request, organization_id):
+        bank_detail = BankDetail.objects.filter(owner = organization_id)
+        serializer = BankDetailSerializer(bank_detail)
+        return response.Response(data= serializer.data, status = 200)
+
+
     @swagger_auto_schema(request_body=BankDetailSerializer)
     def post(self, request, organization_id):
         organization = Organization.objects.filter(creator=request.user).get(id=organization_id)
